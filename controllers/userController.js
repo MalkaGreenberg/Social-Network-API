@@ -67,4 +67,70 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  // Add a new friend to a user
+  async addFriend(req, res) {
+    const userId = req.params.userId;
+    const friendId = req.params.friendId;
+
+    try {
+      const user = await User.findOne(userId)
+        .select('-__v');
+      if (!user) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      }
+
+      const friend = await User.findOne(friendId)
+      .select('-__v');
+      if (!friend) {
+        return res.status(404).json({ message: 'No friend with that ID' });
+      }
+
+      // check if friend is already in the user's friend list
+      if(user.friends.includes(friendId)) {
+        return res.status(404).json({message: 'Friend is already in this friend group'});
+      }
+
+      user.friends.push(friendId);
+      await user.save();
+
+      res.json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({message: 'Internal server error'});
+    }
+  },
+
+   // Remove a friend from a user
+   async removeFriend(req, res) {
+    const userId = req.params.userId;
+    const friendId = req.params.friendId;
+
+    try {
+      const user = await User.findOne(userId)
+        .select('-__v');
+      if (!user) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      }
+
+      const friend = await User.findOne(friendId)
+      .select('-__v');
+      if (!friend) {
+        return res.status(404).json({ message: 'No friend with that ID' });
+      }
+
+      // check if friend is already in the user's friend list
+      if(user.friends.includes(friendId)) {
+        return res.status(404).json({message: 'Friend is already in this friend group'});
+      }
+
+      user.friends = user.friends.filter((friend.toString() !== firendId));
+      await user.save();
+
+      res.json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({message: 'Internal server error'});
+    }
+  },
 };

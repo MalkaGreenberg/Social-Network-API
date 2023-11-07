@@ -53,9 +53,9 @@ Please refer to the walkthrough [video](https://drive.google.com/file/d/1MyZTWfl
 2. Use a tool like Insomnia to test the API routes for creating and managing users, thoughts, reactions, and friends.
 3. Refer to the API Routes section for available endpoints and actions.
 
-[screenshot1](assets/Screenshot1.png)
+![screenshot1](assets/Screenshot1.png)
 
-[screenshot2](assets/Screenshot2.png)
+![screenshot2](assets/Screenshot2.png)
 
 ## Contributing
 

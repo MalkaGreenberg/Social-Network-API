@@ -4,33 +4,30 @@ const data = require('./data');
 
 connection.on('error', (err) => err);
 
-connection.once('open', async () => {
-  try {
-    // Clear existing data
-    await User.deleteMany();
-    await Thought.deleteMany();
+  const seedDatabase = async () => {
+    try {
+      // Clear existing data
+      await User.deleteMany();
+  
+      // Seed users
+      await User.insertMany(data.users);
+  
+      
+      const user = await User.findOne({ username: 'user1' }).populate('thoughts');
+      // console.log(user);
 
-    // Seed users
-    const users = await User.create(data.users);
+      console.log('Database seeded successfully');
+    } catch (error) {
+      console.error('Error seeding the database:', error);
+    } finally {
+      connection.close();
+    }
+  };
 
-    // Seed thoughts with references to users
-    const thoughts = data.thoughts.map((thoughtData) => {
-      const user = users.find((user) => user.username === thoughtData.username);
-      thoughtData.username = user._id;
-      return thoughtData;
-    });
-
-    await Thought.create(thoughts);
-
-    console.log('Database seeded successfully');
-  } catch (error) {
-    console.error('Error seeding the database:', error);
-  } finally {
-    mongoose.connection.close();
-  }
-});
+  
+  seedDatabase();
 
 
-seedDatabase();
+
 
 

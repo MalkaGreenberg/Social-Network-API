@@ -129,10 +129,6 @@ module.exports = {
         return res.status(404).json({ message: 'No friend with that ID' });
       }
 
-      // check if friend is already in the user's friend list
-      if(user.friends.includes({ _id: friendId})) {
-        return res.status(404).json({message: 'Friend is already in this friend group'});
-      }
 
       user.friends = user.friends.filter((friend) => friend.toString() !== friendId);
       await user.save();
